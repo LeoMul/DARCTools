@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import read_grasp0
 import stg2_lib
 import numpy as np 

@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import numpy as np 
 
 def read_grasp0_inp(file_path):

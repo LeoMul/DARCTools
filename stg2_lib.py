@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import numpy as np
 angular_symbols = np.array(['s','p','d','f','g','h'])
 angular_kappa   = np.array([ -1, -2, -3, -4, -5, -6])
