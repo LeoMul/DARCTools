@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/lustre/dirac3/home/dc-mulh1/miniconda3/bin/python3
 import read_grasp0
 import stg2_lib
 import numpy as np 
@@ -12,6 +12,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-f', '--file',  help='Specify path of GRASP.INP file')
 parser.add_argument('-n', '--num',  help='num cont.orbs  ',type=int)
 parser.add_argument('-k', '--kappa',  help='max kappa value',type=int)
+parser.add_argument('-c', '--kappamin',  help='min kappa value',type=int,default=1)
 
 
 args = parser.parse_args()
@@ -61,7 +62,7 @@ def main(graspinp):
     oo.write(" DSTG1 : \n") 
     oo.write(" &ORBS\n")
     oo.write(f" KBMAX = {kbmax} \n")
-    oo.write(" KCMIN = 1\n")
+    oo.write(f" KCMIN = {args.kappamin}\n")
     oo.write(f" KCMAX = {args.kappa} \n")
     oo.write(" MAXNLG ="+maxNString)
     oo.write(" MAXNQN ="+maxNString)

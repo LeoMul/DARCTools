@@ -56,6 +56,7 @@ def write_dstg2(num_levels,
                 peel_orbitals,
                 occupations,
                 ncorinc=-1,
+                pskip = 0,
                 dim=0,
                 ang=-1,
                 file = 'DSTG2.INP'):
@@ -82,7 +83,7 @@ def write_dstg2(num_levels,
         jstart = 0.5
     else:
         jstart = 0.0
-    j = jstart
+    j = jstart + pskip / 2
 
     formatString1 = '&SYM JTOT={:4.1f}  NPTY= {:2} '
     
