@@ -13,7 +13,7 @@ parser.add_argument('-c', '--ncorinc',  help='Value of ncorinc',type=int)
 parser.add_argument('-a', '--all',  help='Print 3 files for autoruns',action='store_true')
 parser.add_argument('-s', '--pskip',  help='Skip this many partial waves',type=int,default=0)
 
-parser.add_argument('-i', '--photoionization',  help='Is this a photoionization run?',type=bool,default=False, action='store_true')
+parser.add_argument('-i', '--photoionization',  help='Is this a photoionization run?', action='store_true')
 
 args = parser.parse_args()
 
