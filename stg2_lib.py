@@ -100,7 +100,7 @@ def write_dstg2(num_levels,
         for _ in range(0,int(num_partial_waves/2)):
             s1 = [j, 1]
             s2 = [j,-1]
-            if (ncorinc != -1):
+            if ( (ncorinc != -1) and (ncorinc is not None)):
                 s1.append(ncorinc)
                 s2.append(ncorinc)
 
