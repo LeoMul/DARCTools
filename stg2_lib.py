@@ -59,7 +59,8 @@ def write_dstg2(num_levels,
                 pskip = 0,
                 dim=0,
                 ang=-1,
-                file = 'DSTG2.INP'):
+                file = 'DSTG2.INP',
+                photoionization = False):
     total_orbtials = len(core_orbitals) + len(peel_orbitals)
 
     num_csfs = np.shape(occupations)[0]
@@ -68,7 +69,11 @@ def write_dstg2(num_levels,
 
     f.write('DSTG2: DARC\n')
     f.write('&PREINP NPW={} NP_PER_SUBWORLD=1 IDIMCHECK={} IANGULAR={} /\n'.format(num_partial_waves,dim,ang))
-    f.write('&DSTG2 NWM={} NMAN={} INAST={} NAST={}/\n'.format(total_orbtials,num_csfs,num_partial_waves,num_levels))
+    
+    if photoionization:
+        f.write('&DSTG2 NWM={} NMAN={} INAST={} NAST={} IPOLPH=2 /\n'.format(total_orbtials,num_csfs,num_partial_waves,num_levels))
+    else:
+        f.write('&DSTG2 NWM={} NMAN={} INAST={}  NAST={}/\n'.format(total_orbtials,num_csfs,num_partial_waves,num_levels))
 
     write_many_orbitals(core_orbitals,peel_orbitals,occupations,f)
 
@@ -83,8 +88,6 @@ def write_dstg2(num_levels,
         jstart = 0.5
     else:
         jstart = 0.0
-    j = jstart + pskip / 2
-
     formatString1 = '&SYM JTOT={:4.1f}  NPTY= {:2} '
     
     if (ncorinc != -1):
@@ -92,18 +95,59 @@ def write_dstg2(num_levels,
     
     formatString1 += '/\n'
     
+    def writePWExcitation():
+        j = jstart + pskip / 2
+        for _ in range(0,int(num_partial_waves/2)):
+            s1 = [j, 1]
+            s2 = [j,-1]
+            if (ncorinc != -1):
+                s1.append(ncorinc)
+                s2.append(ncorinc)
+
+            f.write( formatString1.format(*s1))
+            f.write( formatString1.format(*s2))
+            j += 1
+            
+    def writePWPhotoionization():
+        #interpret num_partial_waves as number of dipole symmetries
+        #i.e 2 * number of dipole pairs
+        possibles = [-1,0,+1]
+        maxIter = 10000
+        pwCounter = 0
+        for _ in range(0,maxIter):
+            
+            s1 = [j, 1]
+            
+            for poss in possibles:
+                thisj = j + poss 
+
+                if thisj >= 0:
+                    pwCounter += 1 
+                    s2 = [j,-1]
+
+                    if (ncorinc != -1):
+                        s1.append(ncorinc)
+                        s2.append(ncorinc)
+
+                    f.write( formatString1.format(*s1))
+                    f.write( formatString1.format(*s2))
+
+                    if pwCounter == num_partial_waves:
+                        return
+            
+            
+            j += 1
+            
+        return None
     
-    for ii in range(0,int(num_partial_waves/2)):
-        
-        s1 = [j, 1]
-        s2 = [j,-1]
-        
-        if (ncorinc != -1):
-            s1.append(ncorinc)
-            s2.append(ncorinc)
-        
-        f.write( formatString1.format(*s1))
-        f.write( formatString1.format(*s2))
-        j += 1
+
+    if photoionization: writePWPhotoionization()
+    else:               writePWExcitation()
+            
+    return None 
+
+
+    
+
 
 #write_orbital(1,-1,[1,1,1,1,1,1,1,1,1])

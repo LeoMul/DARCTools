@@ -13,6 +13,8 @@ parser.add_argument('-c', '--ncorinc',  help='Value of ncorinc',type=int)
 parser.add_argument('-a', '--all',  help='Print 3 files for autoruns',action='store_true')
 parser.add_argument('-s', '--pskip',  help='Skip this many partial waves',type=int,default=0)
 
+parser.add_argument('-i', '--photoionization',  help='Is this a photoionization run?',type=bool,default=False, action='store_true')
+
 args = parser.parse_args()
 
 def main(num_partial_waves,num_levels_cc,graspinp):
@@ -27,12 +29,12 @@ def main(num_partial_waves,num_levels_cc,graspinp):
                 args.pskip]
     
     if args.all:
-        stg2_lib.write_dstg2(*funcArgs,dim=0,ang=-1,file='DSTG2.INP1')
-        stg2_lib.write_dstg2(*funcArgs,dim=1,ang= 0,file='DSTG2.INP2')
-        stg2_lib.write_dstg2(*funcArgs,dim=1,ang= 1,file='DSTG2.INP3')
+        stg2_lib.write_dstg2(*funcArgs,dim=0,ang=-1,file='DSTG2.INP1',photoionization=args.photoionization)
+        stg2_lib.write_dstg2(*funcArgs,dim=1,ang= 0,file='DSTG2.INP2',photoionization=args.photoionization)
+        stg2_lib.write_dstg2(*funcArgs,dim=1,ang= 1,file='DSTG2.INP3',photoionization=args.photoionization)
     else:
     
-        stg2_lib.write_dstg2(*funcArgs)
+        stg2_lib.write_dstg2(*funcArgs,photoionization=args.photoionization)
 
     return 0
 
