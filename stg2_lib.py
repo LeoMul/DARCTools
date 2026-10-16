@@ -114,6 +114,7 @@ def write_dstg2(num_levels,
         possibles = [-1,0,+1]
         maxIter = 10000
         pwCounter = 0
+        j = jstart
         for _ in range(0,maxIter):
             
             s1 = [j, 1]
