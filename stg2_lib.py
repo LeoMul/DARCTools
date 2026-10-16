@@ -90,7 +90,7 @@ def write_dstg2(num_levels,
         jstart = 0.0
     formatString1 = '&SYM JTOT={:4.1f}  NPTY= {:2} '
     
-    if (ncorinc != -1):
+    if ( (ncorinc != -1) and (ncorinc is not None)):
         formatString1 += 'NCORINC={:4}'
     
     formatString1 += '/\n'
@@ -126,10 +126,10 @@ def write_dstg2(num_levels,
                     pwCounter += 1 
                     s2 = [j,-1]
 
-                    if (ncorinc != -1):
+                    if ( (ncorinc != -1) and (ncorinc is not None)):
                         s1.append(ncorinc)
                         s2.append(ncorinc)
-
+                    print(s1,s2)
                     f.write( formatString1.format(*s1))
                     f.write( formatString1.format(*s2))
 
